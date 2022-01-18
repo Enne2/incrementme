@@ -1,11 +1,11 @@
-
+const fs = require("fs");
 const express = require('express')
 const app = express()
 var cors = require('cors')
 const port = 3000
 app.use(cors())
 
-var impressions = {};
+var impressions =  JSON.parse(fs.readFileSync('data.json', 'utf8'));
 app.get('/', (req, res) => {
   console.log(req.url)
   impressions[req.params.url] = impressions[req.params.url] || 0;
@@ -14,5 +14,7 @@ app.get('/', (req, res) => {
 })
 
 app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`)
+  console.log(`Port: ${port}`)
 })
+
+setInterval(() => {fs.writeFileSync('data.json', JSON.stringify(impressions))}, 10000);
