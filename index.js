@@ -8,9 +8,11 @@ app.use(cors())
 var impressions =  JSON.parse(fs.readFileSync('data.json', 'utf8'));
 app.get('/', (req, res) => {
   console.log(req.url)
-  impressions[req.params.url] = impressions[req.params.url] || 0;
-  impressions[req.params.url] += 1
-  res.send(JSON.stringify(impressions[req.params.url]))
+  var url = req.query.url.split("?").shift()
+  console.log(url)
+  impressions[url] = impressions[url] || 0;
+  impressions[url] += 1
+  res.send(JSON.stringify(impressions[url]))
 })
 
 app.listen(port, () => {
